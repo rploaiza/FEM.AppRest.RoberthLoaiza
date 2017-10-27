@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FEM.AppRest.RoberthLoaiza</string>
+    <string name="strError">No se ha recuperado ningún país</string>
 </resources>
