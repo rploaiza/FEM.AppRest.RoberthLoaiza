@@ -5,16 +5,16 @@ public class Result {
     private Integer id;
     private String name;
     private String tags;
-    private Integer priceInCents;
-    private String primaryCategory;
+    private Integer price_in_cents;
+    private String primary_category;
     private String origin;
-    private String _package;
-    private Integer packageUnitVolumeInMilliliters;
-    private Integer alcoholContent;
-    private String producerName;
-    private String imageThumbUrl;
+    private Integer package_unit_volume_in_milliliters;
+    private Integer alcohol_content;
+    private String producer_name;
+    private String image_thumb_url;
     private String varietal;
     private String style;
+
 
     public Integer getId() {
         return id;
@@ -41,19 +41,19 @@ public class Result {
     }
 
     public Integer getPriceInCents() {
-        return priceInCents;
+        return price_in_cents;
     }
 
-    public void setPriceInCents(Integer priceInCents) {
-        this.priceInCents = priceInCents;
+    public void setPriceInCents(Integer price_in_cents) {
+        this.price_in_cents = price_in_cents;
     }
 
     public String getPrimaryCategory() {
-        return primaryCategory;
+        return primary_category;
     }
 
-    public void setPrimaryCategory(String primaryCategory) {
-        this.primaryCategory = primaryCategory;
+    public void setPrimaryCategory(String primary_category) {
+        this.primary_category = primary_category;
     }
 
     public String getOrigin() {
@@ -64,44 +64,36 @@ public class Result {
         this.origin = origin;
     }
 
-    public String getPackage() {
-        return _package;
-    }
-
-    public void setPackage(String _package) {
-        this._package = _package;
-    }
-
     public Integer getPackageUnitVolumeInMilliliters() {
-        return packageUnitVolumeInMilliliters;
+        return package_unit_volume_in_milliliters;
     }
 
-    public void setPackageUnitVolumeInMilliliters(Integer packageUnitVolumeInMilliliters) {
-        this.packageUnitVolumeInMilliliters = packageUnitVolumeInMilliliters;
+    public void setPackageUnitVolumeInMilliliters(Integer package_unit_volume_in_milliliters) {
+        this.package_unit_volume_in_milliliters = package_unit_volume_in_milliliters;
     }
 
     public Integer getAlcoholContent() {
-        return alcoholContent;
+        return alcohol_content;
     }
 
-    public void setAlcoholContent(Integer alcoholContent) {
-        this.alcoholContent = alcoholContent;
+    public void setAlcoholContent(Integer alcohol_content) {
+        this.alcohol_content = alcohol_content;
     }
 
     public String getProducerName() {
-        return producerName;
+        return producer_name;
     }
 
-    public void setProducerName(String producerName) {
-        this.producerName = producerName;
+    public void setProducerName(String producer_name) {
+        this.producer_name = producer_name;
     }
 
     public String getImageThumbUrl() {
-        return imageThumbUrl;
+        return image_thumb_url;
     }
 
-    public void setImageThumbUrl(String imageThumbUrl) {
-        this.imageThumbUrl = imageThumbUrl;
+    public void setImageThumbUrl(String image_thumb_url) {
+        this.image_thumb_url = image_thumb_url;
     }
 
 
@@ -125,18 +117,17 @@ public class Result {
     public String toString() {
         return "Result{" +
                 "id=" + id +
-                ", name='" + name +
-                ", tags='" + tags +
-                ", priceInCents=" + priceInCents +
-                ", primaryCategory='" + primaryCategory +
-                ", origin='" + origin +
-                ", _package='" + _package +
-                ", packageUnitVolumeInMilliliters=" + packageUnitVolumeInMilliliters +
-                ", alcoholContent=" + alcoholContent +
-                ", producerName='" + producerName +
-                ", imageThumbUrl='" + imageThumbUrl +
-                ", varietal='" + varietal +
-                ", style='" + style +
+                ", name='" + name + '\'' +
+                ", tags='" + tags + '\'' +
+                ", priceInCents=" + price_in_cents +
+                ", primaryCategory='" + primary_category + '\'' +
+                ", origin='" + origin + '\'' +
+                ", packageUnitVolumeInMilliliters=" + package_unit_volume_in_milliliters +
+                ", alcoholContent=" + alcohol_content +
+                ", producerName='" + producer_name + '\'' +
+                ", imageThumbUrl='" + image_thumb_url + '\'' +
+                ", varietal='" + varietal + '\'' +
+                ", style='" + style + '\'' +
                 '}';
     }
 

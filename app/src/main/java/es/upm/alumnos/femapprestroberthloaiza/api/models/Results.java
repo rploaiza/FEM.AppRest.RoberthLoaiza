@@ -3,7 +3,7 @@ package es.upm.alumnos.femapprestroberthloaiza.api.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Licors {
+public class Results {
 
     private Integer status;
 
@@ -32,7 +32,7 @@ public class Licors {
         for (Result licors : result)
             licorsToString += licors.toString();
 
-        return "Licors{" +
+        return "Results{" +
                 "status=" + status +
                 ", result=" + licorsToString +
                 '}';

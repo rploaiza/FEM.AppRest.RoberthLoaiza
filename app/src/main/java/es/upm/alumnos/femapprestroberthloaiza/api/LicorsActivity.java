@@ -14,14 +14,16 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import es.upm.alumnos.femapprestroberthloaiza.R;
-import es.upm.alumnos.femapprestroberthloaiza.api.models.Licors;
+import es.upm.alumnos.femapprestroberthloaiza.api.manager.APIManager;
+import es.upm.alumnos.femapprestroberthloaiza.api.manager.Key_Api;
+import es.upm.alumnos.femapprestroberthloaiza.api.models.Results;
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class LicorsActivity extends Activity {
 
     private Key_Api key_api;
-    private Licors licors;
+    private Results licors;
     private APIManager apiManager;
 
     @Override
@@ -31,7 +33,7 @@ public class LicorsActivity extends Activity {
 
         this.key_api = new Key_Api();
         this.apiManager = new APIManager();
-        this.licors = new Licors();
+        this.licors = new Results();
 
         Button buttonToGetGenres = (Button) findViewById(R.id.GetLicors);
         buttonToGetGenres.setOnClickListener(new View.OnClickListener() {
@@ -46,15 +48,15 @@ public class LicorsActivity extends Activity {
         TextView textApiService = (TextView) findViewById(R.id.tvRespuesta);
         textApiService.setMovementMethod(new ScrollingMovementMethod());
 
-        AsyncTaskAPI<Licors> myTask = new AsyncTaskAPI<Licors>(this) {
+        AsyncTaskAPI<Results> myTask = new AsyncTaskAPI<Results>(this) {
             @Override
             protected void onPreExecute() {
             }
 
             @Override
-            protected Response<Licors> doInBackground(TextView... TextViews) {
-                Response<Licors> response = null;
-                Call<Licors> call = this.getLicorsActivity().apiManager.getLicors(this.getLicorsActivity().key_api.getAPIKey(),100);
+            protected Response<Results> doInBackground(TextView... TextViews) {
+                Response<Results> response = null;
+                Call<Results> call = this.getLicorsActivity().apiManager.getLicors(this.getLicorsActivity().key_api.getAPIKey(),100);
                 this.setTextView(TextViews[0]);
 
                 try {
@@ -70,21 +72,9 @@ public class LicorsActivity extends Activity {
             protected void onPostExecute(Response response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Licors licors = (Licors) response.body();
+                        Results licors = (Results) response.body();
                         this.getLicorsActivity().licors = licors;
                         this.getTextView().setText(licors.toString());
-                    } else {
-                        try {
-                            JSONObject JSONErrorObject = new JSONObject(response.errorBody()
-                                    .string());
-                            Log.i("MiW", JSONErrorObject.getString("status_message"));
-                            Toast.makeText(getApplicationContext(), " (" + JSONErrorObject.getString("status_code")
-                                    + ") " + JSONErrorObject.getString(
-                                    "status_message"), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Log.i("MiW", e.getMessage());
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.strError, Toast.LENGTH_LONG).show();
