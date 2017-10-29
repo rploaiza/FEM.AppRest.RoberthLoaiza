@@ -1,6 +1,6 @@
-package es.upm.alumnos.femapprestroberthloaiza.api;
+package es.upm.alumnos.femapprestroberthloaiza.api.manager;
 
-import es.upm.alumnos.femapprestroberthloaiza.api.models.Licors;
+import es.upm.alumnos.femapprestroberthloaiza.api.models.Results;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -22,7 +22,7 @@ public class APIManager {
         apiService = retrofit.create(LicorsRESTAPIService.class);
     }
 
-    public Call<Licors> getLicors(String APIKey, int per_page) {
+    public Call<Results> getLicors(String APIKey, int per_page) {
         return this.apiService.getLicors(APIKey, per_page);
     }
 }
