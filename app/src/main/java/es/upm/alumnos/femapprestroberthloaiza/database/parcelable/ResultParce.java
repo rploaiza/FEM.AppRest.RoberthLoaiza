@@ -13,18 +13,18 @@ public class ResultParce implements Parcelable {
     private Integer licorsId;
     private String name;
     private String tags;
-    private String priceInCents;
+    private Integer priceInCents;
     private String primaryCategory;
     private String origin;
-    private String packageUnitVolumeInMilliliters;
-    private String alcoholContent;
+    private Integer packageUnitVolumeInMilliliters;
+    private Integer alcoholContent;
     private String producerName;
     private String imageThumbUrl;
     private String varietal;
     private String style;
 
-    public ResultParce(int id, int licorsId, String name, String tags, String priceInCents, String primaryCategory,
-                       String origin, String packageUnitVolumeInMilliliters, String alcoholContent,
+    public ResultParce(int id, int licorsId, String name, String tags, int priceInCents, String primaryCategory,
+                       String origin, int packageUnitVolumeInMilliliters, int alcoholContent,
                        String producerName, String imageThumbUrl, String varietal, String style) {
 
         this.setId(id);
@@ -46,11 +46,11 @@ public class ResultParce implements Parcelable {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.tags = in.readString();
-        this.priceInCents = in.readString();
+        this.priceInCents = in.readInt();
         this.primaryCategory = in.readString();
         this.origin = in.readString();
-        this.packageUnitVolumeInMilliliters = in.readString();
-        this.alcoholContent = in.readString();
+        this.packageUnitVolumeInMilliliters = in.readInt();
+        this.alcoholContent = in.readInt();
         this.producerName = in.readString();
         this.imageThumbUrl = in.readString();
         this.varietal = in.readString();
@@ -89,11 +89,11 @@ public class ResultParce implements Parcelable {
         this.tags = tags;
     }
 
-    public String getPriceInCents() {
+    public Integer getPriceInCents() {
         return priceInCents;
     }
 
-    public void setPriceInCents(String priceInCents) {
+    public void setPriceInCents( Integer priceInCents) {
         this.priceInCents = priceInCents;
     }
 
@@ -113,19 +113,19 @@ public class ResultParce implements Parcelable {
         this.origin = origin;
     }
 
-    public String getPackageUnitVolumeInMilliliters() {
+    public Integer getPackageUnitVolumeInMilliliters() {
         return packageUnitVolumeInMilliliters;
     }
 
-    public void setPackageUnitVolumeInMilliliters(String packageUnitVolumeInMilliliters) {
+    public void setPackageUnitVolumeInMilliliters(Integer packageUnitVolumeInMilliliters) {
         this.packageUnitVolumeInMilliliters = packageUnitVolumeInMilliliters;
     }
 
-    public String getAlcoholContent() {
+    public Integer getAlcoholContent() {
         return alcoholContent;
     }
 
-    public void setAlcoholContent(String alcoholContent) {
+    public void setAlcoholContent(Integer alcoholContent) {
         this.alcoholContent = alcoholContent;
     }
 

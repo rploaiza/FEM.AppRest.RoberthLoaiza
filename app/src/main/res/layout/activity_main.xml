@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="16dp"
-    android:paddingLeft="64dp"
-    android:paddingRight="64dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="es.upm.alumnos.femapprestroberthloaiza.api.api.LicorsActivity">
+    tools:context="es.upm.alumnos.femapprestroberthloaiza.api.LicorsActivity">
 
     <LinearLayout
-
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/GetLicors"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="GET LICORES" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/GetLicor"
+                android:layout_width="197dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.61"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="Write any licors!"/>
+
+            <Button
+                android:id="@+id/GetLicors"
+                android:layout_width="41dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.23"
+                android:background="?android:attr/actionModeWebSearchDrawable" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvRespuesta"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/buttonContainer"
-        android:layout_marginTop="13dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvRespuesta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbars="vertical" />
-    </LinearLayout>
+        android:layout_marginTop="18dp"
+        android:layout_weight="1.61"
+        android:scrollbars="vertical" />
 
 
-</LinearLayout>
+</RelativeLayout>

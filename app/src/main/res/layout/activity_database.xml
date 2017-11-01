@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_apiexample"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="es.upm.alumnos.femapprestroberthloaiza.api.manager.APIManager">
+    tools:context="es.upm.alumnos.femapprestroberthloaiza.database.DataBaseActivity">
 
     <LinearLayout
         android:id="@+id/buttonContainer"
@@ -20,16 +19,17 @@
         android:layout_alignParentStart="true">
 
         <Button
-            android:text="GET LICORS"
+            android:id="@+id/buttonGETLicors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonGETLicors" />
+            android:text="GET LICORS" />
 
         <Button
             android:text="GET RANKING BY LICORS ID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonGETRankingByLicorID" />
+
 
     </LinearLayout>
 

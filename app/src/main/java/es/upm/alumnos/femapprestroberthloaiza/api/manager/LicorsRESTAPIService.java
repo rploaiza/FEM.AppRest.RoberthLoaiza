@@ -11,10 +11,7 @@ import retrofit2.http.Query;
 
 interface LicorsRESTAPIService {
 
-    //https://lcboapi.com/products/?access_key=api-key&per_page=per_page
+    // https://lcboapi.com/products/?q=search&access_key=api-key&per_page=100
     @GET("/products/")
-    Call<Results> getLicors(@Query("access_key") String APIKey,
-                           @Query("per_page") int per_page);
-
-   // https://lcboapi.com/products/?q=heineken&access_key=api-key&per_page=100
+    Call<Results> getLicors(@Query("q")String search,@Query("access_key") String APIKey, @Query("per_page") int per_page);
 }
