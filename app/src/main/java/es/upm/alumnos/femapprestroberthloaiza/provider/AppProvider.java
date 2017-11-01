@@ -21,15 +21,15 @@ public class AppProvider extends ContentProvider {
 
     private static final String CLASE = AppProvider.class.getPackage().getName();
     private static final String LICORS_ENTITY = "licors";
-    private static final String RANKING_ENTITY = "rankings";
+    private static final String COMMENT_ENTITY = "comments";
     private static final int ID_LICORS = 1;
-    private static final int ID_RANKING = 2;
+    private static final int ID_COMMENT = 2;
     private static final UriMatcher uriMatcher;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(CLASE, LICORS_ENTITY + "/*", ID_LICORS);
-        uriMatcher.addURI(CLASE, RANKING_ENTITY + "/#", ID_RANKING);
+        uriMatcher.addURI(CLASE, COMMENT_ENTITY + "/#", ID_COMMENT);
     }
 
     private APIController apiController;
@@ -49,7 +49,7 @@ public class AppProvider extends ContentProvider {
             case ID_LICORS:
                 cursor = this.getLicors(uri.getLastPathSegment());
                 break;
-            case ID_RANKING:
+            case ID_COMMENT:
                 cursor = this.getLicorsID(Integer.parseInt(uri.getLastPathSegment()));
                 break;
         }
@@ -62,8 +62,8 @@ public class AppProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ID_LICORS:
                 return "vnd.android.cursor.dir/vnd.miw." + LICORS_ENTITY;
-            case ID_RANKING:
-                return "vnd.android.cursor.item/vnd.miw." + RANKING_ENTITY;
+            case ID_COMMENT:
+                return "vnd.android.cursor.item/vnd.miw." + COMMENT_ENTITY;
             default:
                 return null;
         }
@@ -76,21 +76,16 @@ public class AppProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ID_LICORS:
                 break;
-            case ID_RANKING:
+            case ID_COMMENT:
+                int movieID = Integer.parseInt(uri.getLastPathSegment());
+
+                if (values.containsKey("comment")) {
+                    IdRanking = this.databaseStorage.onInsertRanking(movieID, (String) values.get("comment"));
+                }
                 break;
         }
 
         return ContentUris.withAppendedId(uri, IdRanking);
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
     }
 
     private Cursor getLicors(String nameProduct) {
@@ -120,7 +115,6 @@ public class AppProvider extends ContentProvider {
         }
     }
 
-
     private Cursor getLicorsID(int ID_LICORS) {
         Cursor cursor = null;
 
@@ -130,4 +124,13 @@ public class AppProvider extends ContentProvider {
         return cursor;
     }
 
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        return 0;
+    }
 }

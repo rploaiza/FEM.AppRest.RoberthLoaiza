@@ -7,22 +7,22 @@ import android.os.Parcelable;
  * Created by Usuario on 27/10/2017.
  */
 
-public class RankingParce implements Parcelable {
+public class CommentParce implements Parcelable {
 
     private int id;
     private int licorsId;
-    private int ranking;
+    private String comment;
 
-    public RankingParce(int id, int licorsId, int ranking) {
+    public CommentParce(int id, int licorsId, String comment) {
         this.setId(id);
         this.setLicorsId(licorsId);
-        this.setRanking(ranking);
+        this.setRanking(comment);
     }
 
-    protected RankingParce(Parcel in) {
+    protected CommentParce(Parcel in) {
         this.setId(in.readInt());
         this.setLicorsId(in.readInt());
-        this.setRanking(in.readInt());
+        this.setRanking(in.readString());
     }
 
     public int getId() {
@@ -41,20 +41,20 @@ public class RankingParce implements Parcelable {
         this.licorsId = licorsId;
     }
 
-    public int getRanking() {
-        return ranking;
+    public String getRanking() {
+        return comment;
     }
 
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
+    public void setRanking(String comment) {
+        this.comment = comment;
     }
 
     @Override
     public String toString() {
-        return "Ranking{" +
+        return "CommentParce{" +
                 "id=" + id +
                 ", licorsId=" + licorsId +
-                ", ranking=" + ranking +
+                ", ranking=" + comment +
                 '}';
     }
 
@@ -63,15 +63,15 @@ public class RankingParce implements Parcelable {
         return 0;
     }
 
-    public static final Creator<RankingParce> CREATOR = new Creator<RankingParce>() {
+    public static final Creator<CommentParce> CREATOR = new Creator<CommentParce>() {
         @Override
-        public RankingParce createFromParcel(Parcel source) {
-            return new RankingParce(source);
+        public CommentParce createFromParcel(Parcel source) {
+            return new CommentParce(source);
         }
 
         @Override
-        public RankingParce[] newArray(int size) {
-            return new RankingParce[size];
+        public CommentParce[] newArray(int size) {
+            return new CommentParce[size];
         }
     };
 
@@ -79,6 +79,6 @@ public class RankingParce implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeInt(this.licorsId);
-        dest.writeInt(this.ranking);
+        dest.writeString(this.comment);
     }
 }

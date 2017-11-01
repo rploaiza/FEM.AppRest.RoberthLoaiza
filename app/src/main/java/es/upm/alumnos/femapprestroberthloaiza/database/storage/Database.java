@@ -10,10 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
-import es.upm.alumnos.femapprestroberthloaiza.database.contract.RankingContract;
+import es.upm.alumnos.femapprestroberthloaiza.database.contract.CommentContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
-import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.RankingParce;
+import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.CommentParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
 
 /**
@@ -50,10 +50,10 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL(createTable);
 
-        createTable = "CREATE TABLE " + RankingContract.rankingTable.TABLE_NAME
-                + "(" + RankingContract.rankingTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + RankingContract.rankingTable.COLUMN_NAME_LICORS_ID + " INTEGER, "
-                + RankingContract.rankingTable.COLUMN_NAME_RANKING + " INTEGER"
+        createTable = "CREATE TABLE " + CommentContract.rankingTable.TABLE_NAME
+                + "(" + CommentContract.rankingTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + CommentContract.rankingTable.COLUMN_NAME_LICORS_ID + " INTEGER, "
+                + CommentContract.rankingTable.COLUMN_NAME_COMMENT + " TEXT"
                 + " );";
         db.execSQL(createTable);
 
@@ -69,7 +69,7 @@ public class Database extends SQLiteOpenHelper {
         String dropTable = "DROP TABLE IF EXISTS " + ResultContract.licorsTable.TABLE_NAME;
         db.execSQL(dropTable);
 
-        dropTable = "DROP TABLE IF EXISTS " + RankingContract.rankingTable.TABLE_NAME;
+        dropTable = "DROP TABLE IF EXISTS " + CommentContract.rankingTable.TABLE_NAME;
         db.execSQL(dropTable);
 
         dropTable = "DROP TABLE IF EXISTS " + ApiKeyContract.tokenTable.TABLE_NAME;
@@ -104,12 +104,12 @@ public class Database extends SQLiteOpenHelper {
         return db.insert(ResultContract.licorsTable.TABLE_NAME, null, values);
     }
 
-    public long onInsertRanking(int licorsId, int ranking) {
+    public long onInsertRanking(int licorsId, String comment) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(RankingContract.rankingTable.COLUMN_NAME_LICORS_ID, licorsId);
-        values.put(RankingContract.rankingTable.COLUMN_NAME_RANKING, ranking);
-        return db.insert(RankingContract.rankingTable.TABLE_NAME, null, values);
+        values.put(CommentContract.rankingTable.COLUMN_NAME_LICORS_ID, licorsId);
+        values.put(CommentContract.rankingTable.COLUMN_NAME_COMMENT, comment);
+        return db.insert(CommentContract.rankingTable.TABLE_NAME, null, values);
     }
 
     public long onInsertApiKey(String api_key) {
@@ -121,21 +121,21 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getCursorIDLicors(int licorsId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String SQLWhere = RankingContract.rankingTable.COLUMN_NAME_LICORS_ID + " = ?";
+        String SQLWhere = CommentContract.rankingTable.COLUMN_NAME_LICORS_ID + " = ?";
 
-        return db.query(RankingContract.rankingTable.TABLE_NAME, null,
+        return db.query(CommentContract.rankingTable.TABLE_NAME, null,
                 SQLWhere, new String[]{Integer.toString(licorsId)}, null, null, null);
     }
 
-    public RankingParce getRankingID(int licorsId) {
-        RankingParce rankingParce = null;
+    public CommentParce getRankingID(int licorsId) {
+        CommentParce rankingParce = null;
         Cursor cursor = this.getCursorIDLicors(licorsId);
 
         if (cursor.moveToFirst()) {
-            rankingParce = new RankingParce(
-                    cursor.getInt(cursor.getColumnIndex(RankingContract.rankingTable.COLUMN_NAME_ID)),
-                    cursor.getInt(cursor.getColumnIndex(RankingContract.rankingTable.COLUMN_NAME_LICORS_ID)),
-                    cursor.getInt(cursor.getColumnIndex(RankingContract.rankingTable.COLUMN_NAME_RANKING))
+            rankingParce = new CommentParce(
+                    cursor.getInt(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_ID)),
+                    cursor.getInt(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_LICORS_ID)),
+                    cursor.getString(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_COMMENT))
             );
             cursor.close();
         }
