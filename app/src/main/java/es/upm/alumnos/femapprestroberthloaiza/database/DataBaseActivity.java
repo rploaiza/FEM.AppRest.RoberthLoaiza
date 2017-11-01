@@ -17,10 +17,10 @@ import es.upm.alumnos.femapprestroberthloaiza.api.models.Result;
 import es.upm.alumnos.femapprestroberthloaiza.api.models.Results;
 import es.upm.alumnos.femapprestroberthloaiza.api.manager.Key_Api;
 import es.upm.alumnos.femapprestroberthloaiza.api.manager.APIManager;
-import es.upm.alumnos.femapprestroberthloaiza.database.contract.RankingContract;
+import es.upm.alumnos.femapprestroberthloaiza.database.contract.CommentContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
-import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.RankingParce;
+import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.CommentParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.storage.Database;
@@ -51,7 +51,7 @@ public class DataBaseActivity extends Activity {
         this.onCreate();
 
         buttonGETLicors = (Button) findViewById(R.id.buttonGETLicors);
-        buttonGETRankingByLicorID  = (Button) findViewById(R.id.buttonGETRankingByLicorID);
+
 
         buttonGETLicors.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +60,6 @@ public class DataBaseActivity extends Activity {
             }
         });
 
-        buttonGETRankingByLicorID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewRanking();
-            }
-        });
 
     }
 
@@ -138,31 +132,6 @@ public class DataBaseActivity extends Activity {
                     result.getVarietal(), result.getStyle());
     }
 
-    private void viewRanking() {
-        if (this.databaseStorage.count(ResultContract.licorsTable.TABLE_NAME) > 0) {
-            ArrayList<ResultParce> licors = this.databaseStorage.getLicorsByProducerName("Corona");
-            if (this.databaseStorage.count(RankingContract.rankingTable.TABLE_NAME) == 0)
-                this.onInsertRanking(licors.get(0));
-            ListView ratingsList = (ListView) findViewById(R.id.list);
-
-            ArrayList<String> rankings = new ArrayList<>();
-            RankingParce ranking = this.databaseStorage.getRankingID(licors.get(0).getLicorsId());
-            rankings.add(ranking.toString());
-
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                    getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    rankings);
-
-            ratingsList.setAdapter(arrayAdapter);
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.strError, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void onInsertRanking(ResultParce resultParce) {
-        this.databaseStorage.onInsertRanking(resultParce.getLicorsId(), 8);
-    }
 
     private void getApiKey() {
         if (this.key_api.getAPIKey() != null) {

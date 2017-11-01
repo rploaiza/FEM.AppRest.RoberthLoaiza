@@ -22,13 +22,7 @@
             android:id="@+id/buttonGETLicors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GET LICORS" />
-
-        <Button
-            android:text="GET RANKING BY LICORS ID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonGETRankingByLicorID" />
+            android:text="SHOW BEER CORONA" />
 
 
     </LinearLayout>
