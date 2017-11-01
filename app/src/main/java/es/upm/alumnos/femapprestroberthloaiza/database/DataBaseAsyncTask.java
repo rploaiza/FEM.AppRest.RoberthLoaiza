@@ -11,7 +11,6 @@ import retrofit2.Response;
 
 public abstract class DataBaseAsyncTask <U> extends AsyncTask<ListView, Void, Response> {
     private DataBaseActivity dataBaseActivity;
-    private ListView listView;
 
     public DataBaseAsyncTask(DataBaseActivity dataBaseActivity) {
         this.dataBaseActivity = dataBaseActivity;
@@ -21,13 +20,6 @@ public abstract class DataBaseAsyncTask <U> extends AsyncTask<ListView, Void, Re
         return dataBaseActivity;
     }
 
-    public ListView getListView() {
-        return listView;
-    }
-
-    public void setListView(ListView listView) {
-        this.listView = listView;
-    }
 
     protected abstract void onPreExecute();
 

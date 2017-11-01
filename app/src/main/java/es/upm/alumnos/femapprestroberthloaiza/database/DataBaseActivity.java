@@ -19,8 +19,10 @@ import es.upm.alumnos.femapprestroberthloaiza.api.manager.Key_Api;
 import es.upm.alumnos.femapprestroberthloaiza.api.manager.APIManager;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.RankingContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
+import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.RankingParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
+import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.storage.Database;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -35,7 +37,7 @@ public class DataBaseActivity extends Activity {
     private APIManager apiManager;
     private Results results;
     private Database databaseStorage;
-    private static final String CATEGORY = "Beer";
+    private Button buttonGETLicors, buttonGETRankingByLicorID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +48,10 @@ public class DataBaseActivity extends Activity {
         this.apiManager = new APIManager();
         this.results = new Results();
         this.databaseStorage = new Database(getApplicationContext());
-        this.initializeApp();
+        this.onCreate();
 
-        Button buttonGETLicors = (Button) findViewById(R.id.buttonGETLicors);
-        Button buttonGETRankingByLicorID = (Button) findViewById(R.id.buttonGETRankingByLicorID);
+        buttonGETLicors = (Button) findViewById(R.id.buttonGETLicors);
+        buttonGETRankingByLicorID  = (Button) findViewById(R.id.buttonGETRankingByLicorID);
 
         buttonGETLicors.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +67,11 @@ public class DataBaseActivity extends Activity {
             }
         });
 
-
     }
 
-    private void initializeApp() {
+    private void onCreate() {
         this.GetLicors();
+        this.getApiKey();
     }
 
 
@@ -83,8 +85,7 @@ public class DataBaseActivity extends Activity {
             @Override
             protected Response<Results> doInBackground(ListView... ListViews) {
                 Response<Results> response = null;
-                Call<Results> call = this.getDataBaseActivity().apiManager.getLicors(
-                        this.getDataBaseActivity().key_api.getAPIKey(), 100);
+                Call<Results> call = this.getDataBaseActivity().apiManager.getLicors("Corona", this.getDataBaseActivity().key_api.getAPIKey(), 100);
                 try {
                     response = call.execute();
                 } catch (IOException e) {
@@ -129,31 +130,29 @@ public class DataBaseActivity extends Activity {
     }
 
     private void onInsertLicors() {
-        for (Result movie : this.results.getResult())
-            this.databaseStorage.onInsertLicors(movie.getId(), movie.getName(),
-                    movie.getTags(), movie.getPriceInCents(), movie.getPrimaryCategory(),
-                    movie.getOrigin(), movie.getPackageUnitVolumeInMilliliters(),
-                    movie.getAlcoholContent(), movie.getProducerName(), movie.getImageThumbUrl(),
-                    movie.getVarietal(), movie.getStyle());
+        for (Result result : this.results.getResult())
+            this.databaseStorage.onInsertLicors(result.getId(), result.getName(),
+                    result.getTags(), result.getPriceInCents(), result.getPrimaryCategory(),
+                    result.getOrigin(), result.getPackageUnitVolumeInMilliliters(),
+                    result.getAlcoholContent(), result.getProducerName(), result.getImageThumbUrl(),
+                    result.getVarietal(), result.getStyle());
     }
 
-    private void viewRanking(){
+    private void viewRanking() {
         if (this.databaseStorage.count(ResultContract.licorsTable.TABLE_NAME) > 0) {
-            ArrayList<ResultParce> licors = this.databaseStorage.getLicorsByCategory(CATEGORY);
-
+            ArrayList<ResultParce> licors = this.databaseStorage.getLicorsByProducerName("Corona");
             if (this.databaseStorage.count(RankingContract.rankingTable.TABLE_NAME) == 0)
-            this.onInsertRanking(licors.get(0));
-
+                this.onInsertRanking(licors.get(0));
             ListView ratingsList = (ListView) findViewById(R.id.list);
-            ArrayList<String> ratings = new ArrayList<>();
-            RankingParce ranking = this.databaseStorage.getRankingID(licors.get(0).getLicorsId());
 
-            ratings.add(ranking.toString());
+            ArrayList<String> rankings = new ArrayList<>();
+            RankingParce ranking = this.databaseStorage.getRankingID(licors.get(0).getLicorsId());
+            rankings.add(ranking.toString());
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                     getApplicationContext(),
                     android.R.layout.simple_list_item_1,
-                    ratings);
+                    rankings);
 
             ratingsList.setAdapter(arrayAdapter);
         } else {
@@ -161,7 +160,24 @@ public class DataBaseActivity extends Activity {
         }
     }
 
-    private void onInsertRanking(ResultParce movie) {
-        this.databaseStorage.onInsertRanking(movie.getLicorsId(), 8);
+    private void onInsertRanking(ResultParce resultParce) {
+        this.databaseStorage.onInsertRanking(resultParce.getLicorsId(), 8);
+    }
+
+    private void getApiKey() {
+        if (this.key_api.getAPIKey() != null) {
+            if (this.databaseStorage.count(ApiKeyContract.tokenTable.TABLE_NAME) == 0)
+                this.insertApiKey();
+
+            ArrayList<String> API = new ArrayList<>();
+            ApiKeyParce api_key = this.databaseStorage.getAPIKey();
+            API.add(api_key.toString());
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.strError, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void insertApiKey() {
+        this.databaseStorage.onInsertApiKey(this.key_api.getAPIKey());
     }
 }

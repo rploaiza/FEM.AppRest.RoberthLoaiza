@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.RankingContract;
+import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
+import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.RankingParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
 
@@ -54,6 +56,12 @@ public class Database extends SQLiteOpenHelper {
                 + RankingContract.rankingTable.COLUMN_NAME_RANKING + " INTEGER"
                 + " );";
         db.execSQL(createTable);
+
+        createTable = "CREATE TABLE " + ApiKeyContract.tokenTable.TABLE_NAME
+                + "(" + ApiKeyContract.tokenTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN + " TEXT"
+                + " );";
+        db.execSQL(createTable);
     }
 
     @Override
@@ -62,6 +70,9 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(dropTable);
 
         dropTable = "DROP TABLE IF EXISTS " + RankingContract.rankingTable.TABLE_NAME;
+        db.execSQL(dropTable);
+
+        dropTable = "DROP TABLE IF EXISTS " + ApiKeyContract.tokenTable.TABLE_NAME;
         db.execSQL(dropTable);
     }
 
@@ -101,6 +112,12 @@ public class Database extends SQLiteOpenHelper {
         return db.insert(RankingContract.rankingTable.TABLE_NAME, null, values);
     }
 
+    public long onInsertApiKey(String api_key) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN, api_key);
+        return db.insert(ApiKeyContract.tokenTable.TABLE_NAME, null, values);
+    }
 
     public Cursor getCursorIDLicors(int licorsId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -125,18 +142,18 @@ public class Database extends SQLiteOpenHelper {
         return rankingParce;
     }
 
-    public Cursor getLicorsByCategoryCursor(String category) {
-        String SQLWhere = ResultContract.licorsTable.COLUMN_NAME_LICORS_PRIMARY_CATEGORY + " = ?";
+    public Cursor getCursorLicorsByProducerName(String producerName) {
+        String SQLWhere = ResultContract.licorsTable.COLUMN_NAME_LICORS_NAME + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(ResultContract.licorsTable.TABLE_NAME, null,
-                SQLWhere, new String[]{category}, null, null, null);
+                SQLWhere, new String[]{producerName}, null, null, null);
+
     }
 
-
-    public ArrayList<ResultParce> getLicorsByCategory(String category) {
+    public ArrayList<ResultParce> getLicorsByProducerName(String producerName) {
 
         ArrayList<ResultParce> licors = new ArrayList<>();
-        Cursor cursor = this.getLicorsByCategoryCursor(category);
+        Cursor cursor = this.getCursorLicorsByProducerName(producerName);
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -145,11 +162,11 @@ public class Database extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_ID)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_NAME)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_TAGS)),
-                        cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PRICE_IN_CENTS)),
+                        cursor.getInt(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PRICE_IN_CENTS)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PRIMARY_CATEGORY)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_ORIGIN)),
-                        cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PACKAGE_VOL_MIL)),
-                        cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_ALCOHOL_CONT)),
+                        cursor.getInt(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PACKAGE_VOL_MIL)),
+                        cursor.getInt(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_ALCOHOL_CONT)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_PRODUCER_NAME)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_IMAGE_THUMB_URL)),
                         cursor.getString(cursor.getColumnIndex(ResultContract.licorsTable.COLUMN_NAME_LICORS_VARIETAL)),
@@ -163,5 +180,18 @@ public class Database extends SQLiteOpenHelper {
         return licors;
     }
 
+    public ApiKeyParce getAPIKey() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ApiKeyParce api_key = null;
+        Cursor cursor = db.query(ApiKeyContract.tokenTable.TABLE_NAME, null, null, null, null, null, null);
 
+        if (cursor.moveToFirst()) {
+            api_key = new ApiKeyParce(
+                    cursor.getInt(cursor.getColumnIndex(ApiKeyContract.tokenTable.COLUMN_NAME_ID)),
+                    cursor.getString(cursor.getColumnIndex(ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN))
+            );
+            cursor.close();
+        }
+        return api_key;
+    }
 }

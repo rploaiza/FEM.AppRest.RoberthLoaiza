@@ -14,7 +14,7 @@ public class APIManager {
 
     private LicorsRESTAPIService apiService;
 
-    public APIManager(){
+    public APIManager() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -22,7 +22,7 @@ public class APIManager {
         apiService = retrofit.create(LicorsRESTAPIService.class);
     }
 
-    public Call<Results> getLicors(String APIKey, int per_page) {
-        return this.apiService.getLicors(APIKey, per_page);
+    public Call<Results> getLicors(String search, String APIKey, int per_page) {
+        return this.apiService.getLicors(search, APIKey, per_page);
     }
 }
