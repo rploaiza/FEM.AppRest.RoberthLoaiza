@@ -9,7 +9,7 @@ import retrofit2.Response;
  * Created by Usuario on 27/10/2017.
  */
 
-public abstract class DataBaseAsyncTask <U> extends AsyncTask<ListView, Void, Response> {
+public abstract class DataBaseAsyncTask<U> extends AsyncTask<ListView, Void, Response> {
     private DataBaseActivity dataBaseActivity;
 
     public DataBaseAsyncTask(DataBaseActivity dataBaseActivity) {

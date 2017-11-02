@@ -63,7 +63,7 @@ public class AppProvider extends ContentProvider {
             case ID_LICORS:
                 return "vnd.android.cursor.dir/vnd.miw." + LICORS_ENTITY;
             case ID_COMMENT:
-                return "vnd.android.cursor.item/vnd.miw." + COMMENT_ENTITY;
+                return "vnd.android.cursor.item/vnd.miw." + COMMENT_ENTITY; //una sola entrada
             default:
                 return null;
         }
@@ -71,21 +71,19 @@ public class AppProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long IdRanking = -1;
+        long IdComment = -1;
 
         switch (uriMatcher.match(uri)) {
             case ID_LICORS:
                 break;
             case ID_COMMENT:
-                int movieID = Integer.parseInt(uri.getLastPathSegment());
-
                 if (values.containsKey("comment")) {
-                    IdRanking = this.databaseStorage.onInsertRanking(movieID, (String) values.get("comment"));
+                    IdComment = this.databaseStorage.onInsertComment(Integer.parseInt(uri.getLastPathSegment()), (String) values.get("comment"));
                 }
                 break;
         }
 
-        return ContentUris.withAppendedId(uri, IdRanking);
+        return ContentUris.withAppendedId(uri, IdComment);
     }
 
     private Cursor getLicors(String nameProduct) {

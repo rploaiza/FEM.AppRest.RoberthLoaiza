@@ -18,12 +18,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <Button
-            android:id="@+id/buttonGETLicors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SHOW BEER CORONA" />
-
 
     </LinearLayout>
 

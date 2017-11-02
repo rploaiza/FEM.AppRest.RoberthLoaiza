@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class LicorsActivity extends Activity {
 
     private Key_Api key_api;
-    private Results licors;
+    private Results results;
     private APIManager apiManager;
     private EditText getLicor;
 
@@ -33,12 +33,12 @@ public class LicorsActivity extends Activity {
 
         this.key_api = new Key_Api();
         this.apiManager = new APIManager();
-        this.licors = new Results();
+        this.results = new Results();
 
         getLicor = (EditText) findViewById(R.id.GetLicor);
 
-        Button buttonToGetGenres = (Button) findViewById(R.id.GetLicors);
-        buttonToGetGenres.setOnClickListener(new View.OnClickListener() {
+        Button buttonToGetLicors = (Button) findViewById(R.id.GetLicors);
+        buttonToGetLicors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLicors(getLicor.getText().toString());
@@ -76,7 +76,7 @@ public class LicorsActivity extends Activity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         Results licors = (Results) response.body();
-                        this.getLicorsActivity().licors = licors;
+                        this.getLicorsActivity().results = licors;
                         this.getTextView().setText(licors.toString());
                     }
                 } else {

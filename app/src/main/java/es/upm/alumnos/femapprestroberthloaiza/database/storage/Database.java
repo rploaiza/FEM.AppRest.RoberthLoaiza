@@ -13,7 +13,6 @@ import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.CommentContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
-import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.CommentParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
 
 /**
@@ -50,16 +49,16 @@ public class Database extends SQLiteOpenHelper {
 
         db.execSQL(createTable);
 
-        createTable = "CREATE TABLE " + CommentContract.rankingTable.TABLE_NAME
-                + "(" + CommentContract.rankingTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CommentContract.rankingTable.COLUMN_NAME_LICORS_ID + " INTEGER, "
-                + CommentContract.rankingTable.COLUMN_NAME_COMMENT + " TEXT"
+        createTable = "CREATE TABLE " + CommentContract.commentTable.TABLE_NAME
+                + "(" + CommentContract.commentTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + CommentContract.commentTable.COLUMN_NAME_LICORS_ID + " INTEGER, "
+                + CommentContract.commentTable.COLUMN_NAME_COMMENT + " TEXT"
                 + " );";
         db.execSQL(createTable);
 
-        createTable = "CREATE TABLE " + ApiKeyContract.tokenTable.TABLE_NAME
-                + "(" + ApiKeyContract.tokenTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN + " TEXT"
+        createTable = "CREATE TABLE " + ApiKeyContract.ApiTable.TABLE_NAME
+                + "(" + ApiKeyContract.ApiTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ApiKeyContract.ApiTable.COLUMN_NAME_API_KEY + " TEXT"
                 + " );";
         db.execSQL(createTable);
     }
@@ -69,10 +68,10 @@ public class Database extends SQLiteOpenHelper {
         String dropTable = "DROP TABLE IF EXISTS " + ResultContract.licorsTable.TABLE_NAME;
         db.execSQL(dropTable);
 
-        dropTable = "DROP TABLE IF EXISTS " + CommentContract.rankingTable.TABLE_NAME;
+        dropTable = "DROP TABLE IF EXISTS " + CommentContract.commentTable.TABLE_NAME;
         db.execSQL(dropTable);
 
-        dropTable = "DROP TABLE IF EXISTS " + ApiKeyContract.tokenTable.TABLE_NAME;
+        dropTable = "DROP TABLE IF EXISTS " + ApiKeyContract.ApiTable.TABLE_NAME;
         db.execSQL(dropTable);
     }
 
@@ -104,43 +103,29 @@ public class Database extends SQLiteOpenHelper {
         return db.insert(ResultContract.licorsTable.TABLE_NAME, null, values);
     }
 
-    public long onInsertRanking(int licorsId, String comment) {
+    public long onInsertComment(int licorsId, String comment) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CommentContract.rankingTable.COLUMN_NAME_LICORS_ID, licorsId);
-        values.put(CommentContract.rankingTable.COLUMN_NAME_COMMENT, comment);
-        return db.insert(CommentContract.rankingTable.TABLE_NAME, null, values);
+        values.put(CommentContract.commentTable.COLUMN_NAME_LICORS_ID, licorsId);
+        values.put(CommentContract.commentTable.COLUMN_NAME_COMMENT, comment);
+        return db.insert(CommentContract.commentTable.TABLE_NAME, null, values);
     }
 
     public long onInsertApiKey(String api_key) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN, api_key);
-        return db.insert(ApiKeyContract.tokenTable.TABLE_NAME, null, values);
+        values.put(ApiKeyContract.ApiTable.COLUMN_NAME_API_KEY, api_key);
+        return db.insert(ApiKeyContract.ApiTable.TABLE_NAME, null, values);
     }
 
     public Cursor getCursorIDLicors(int licorsId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String SQLWhere = CommentContract.rankingTable.COLUMN_NAME_LICORS_ID + " = ?";
+        String SQLWhere = CommentContract.commentTable.COLUMN_NAME_LICORS_ID + " = ?";
 
-        return db.query(CommentContract.rankingTable.TABLE_NAME, null,
+        return db.query(CommentContract.commentTable.TABLE_NAME, null,
                 SQLWhere, new String[]{Integer.toString(licorsId)}, null, null, null);
     }
 
-    public CommentParce getRankingID(int licorsId) {
-        CommentParce rankingParce = null;
-        Cursor cursor = this.getCursorIDLicors(licorsId);
-
-        if (cursor.moveToFirst()) {
-            rankingParce = new CommentParce(
-                    cursor.getInt(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_ID)),
-                    cursor.getInt(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_LICORS_ID)),
-                    cursor.getString(cursor.getColumnIndex(CommentContract.rankingTable.COLUMN_NAME_COMMENT))
-            );
-            cursor.close();
-        }
-        return rankingParce;
-    }
 
     public Cursor getCursorLicorsByProducerName(String producerName) {
         String SQLWhere = ResultContract.licorsTable.COLUMN_NAME_LICORS_NAME + " = ?";
@@ -183,12 +168,12 @@ public class Database extends SQLiteOpenHelper {
     public ApiKeyParce getAPIKey() {
         SQLiteDatabase db = this.getReadableDatabase();
         ApiKeyParce api_key = null;
-        Cursor cursor = db.query(ApiKeyContract.tokenTable.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = db.query(ApiKeyContract.ApiTable.TABLE_NAME, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             api_key = new ApiKeyParce(
-                    cursor.getInt(cursor.getColumnIndex(ApiKeyContract.tokenTable.COLUMN_NAME_ID)),
-                    cursor.getString(cursor.getColumnIndex(ApiKeyContract.tokenTable.COLUMN_NAME_TOKEN))
+                    cursor.getInt(cursor.getColumnIndex(ApiKeyContract.ApiTable.COLUMN_NAME_ID)),
+                    cursor.getString(cursor.getColumnIndex(ApiKeyContract.ApiTable.COLUMN_NAME_API_KEY))
             );
             cursor.close();
         }

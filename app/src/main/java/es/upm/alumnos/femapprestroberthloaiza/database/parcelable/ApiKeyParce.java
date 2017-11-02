@@ -3,13 +3,13 @@ package es.upm.alumnos.femapprestroberthloaiza.database.parcelable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import static es.upm.alumnos.femapprestroberthloaiza.api.manager.Key_Api.API_KEY;
+
 /**
  * Created by Usuario on 1/11/2017.
  */
 
 public class ApiKeyParce implements Parcelable{
-
-    private static final String API_KEY="MDpjMDI2YjY0Ni1iYTQxLTExZTctODMwMi0zYjZjZWM3ZmI5N2Q6d2RlTUE3MzA4SjVXVlpzd1BvOGdpQzFGRjBKWmU3VjJmNWNW";
 
     private int id;
     private String apikey;

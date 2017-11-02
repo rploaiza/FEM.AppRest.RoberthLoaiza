@@ -3,9 +3,7 @@ package es.upm.alumnos.femapprestroberthloaiza.database;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,11 +15,8 @@ import es.upm.alumnos.femapprestroberthloaiza.api.models.Result;
 import es.upm.alumnos.femapprestroberthloaiza.api.models.Results;
 import es.upm.alumnos.femapprestroberthloaiza.api.manager.Key_Api;
 import es.upm.alumnos.femapprestroberthloaiza.api.manager.APIManager;
-import es.upm.alumnos.femapprestroberthloaiza.database.contract.CommentContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ResultContract;
 import es.upm.alumnos.femapprestroberthloaiza.database.contract.ApiKeyContract;
-import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.CommentParce;
-import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ResultParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.parcelable.ApiKeyParce;
 import es.upm.alumnos.femapprestroberthloaiza.database.storage.Database;
 import retrofit2.Call;
@@ -37,7 +32,6 @@ public class DataBaseActivity extends Activity {
     private APIManager apiManager;
     private Results results;
     private Database databaseStorage;
-    private Button buttonGETLicors, buttonGETRankingByLicorID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +43,6 @@ public class DataBaseActivity extends Activity {
         this.results = new Results();
         this.databaseStorage = new Database(getApplicationContext());
         this.onCreate();
-
-        buttonGETLicors = (Button) findViewById(R.id.buttonGETLicors);
-
-
-        buttonGETLicors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewLicors();
-            }
-        });
-
 
     }
 
@@ -93,6 +76,7 @@ public class DataBaseActivity extends Activity {
                 if (response.isSuccessful()) {
                     if (response.body() != null)
                         this.getDataBaseActivity().results = (Results) response.body();
+                    viewLicors();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.strError, Toast.LENGTH_LONG).show();
                 }
@@ -135,7 +119,7 @@ public class DataBaseActivity extends Activity {
 
     private void getApiKey() {
         if (this.key_api.getAPIKey() != null) {
-            if (this.databaseStorage.count(ApiKeyContract.tokenTable.TABLE_NAME) == 0)
+            if (this.databaseStorage.count(ApiKeyContract.ApiTable.TABLE_NAME) == 0)
                 this.insertApiKey();
 
             ArrayList<String> API = new ArrayList<>();

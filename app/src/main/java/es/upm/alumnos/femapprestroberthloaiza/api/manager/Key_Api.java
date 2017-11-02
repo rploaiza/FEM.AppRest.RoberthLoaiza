@@ -6,7 +6,7 @@ package es.upm.alumnos.femapprestroberthloaiza.api.manager;
 
 public class Key_Api {
 
-    private static final String API_KEY="MDpjMDI2YjY0Ni1iYTQxLTExZTctODMwMi0zYjZjZWM3ZmI5N2Q6d2RlTUE3MzA4SjVXVlpzd1BvOGdpQzFGRjBKWmU3VjJmNWNW";
+    public static final String API_KEY="MDpjMDI2YjY0Ni1iYTQxLTExZTctODMwMi0zYjZjZWM3ZmI5N2Q6d2RlTUE3MzA4SjVXVlpzd1BvOGdpQzFGRjBKWmU3VjJmNWNW";
 
     private String APIKey;
 
